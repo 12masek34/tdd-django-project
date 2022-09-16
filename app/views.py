@@ -6,4 +6,6 @@ def index(request):
 
     some = 'some'
     a = 'x'
+    s = 1
     return HttpResponse(f'<h1>{x}<h1>')
+ 
