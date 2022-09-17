@@ -89,3 +89,4 @@ db.sqlite3
 
 *~
 geckodriver
+__pycache__
