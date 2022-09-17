@@ -1,8 +1,0 @@
-import django
-
-def some():
-    print('aaa')
-
-
-some()
-
