@@ -1,7 +1,11 @@
+from django.urls import resolve
 from django.test import TestCase
+
+from app.views import index
 
 
 class SmoeTest(TestCase):
 
     def test_bad_math(self):
-        self.assertEqual(1 + 1, 3)
+        found = resolve('/')
+        self.assertEqual(found.func, index)
