@@ -90,3 +90,5 @@ db.sqlite3
 *~
 geckodriver
 __pycache__
+geckodriver.log
+#geckodriver.log#
