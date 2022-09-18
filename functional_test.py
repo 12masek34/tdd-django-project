@@ -11,9 +11,6 @@ class NewVisitorTest(unittest.TestCase):
         self.browser = webdriver.Firefox(
            executable_path='/Users/dmitrijmartys/Python/test/core/geckodriver')
 
-<<<<<<< HEAD
-browser.close()
-=======
     def tearDown(self):
         self.browser.close()
 
@@ -25,5 +22,3 @@ browser.close()
 
 if __name__ == '__main__':
     unittest.main(warnings='ignore')
-
->>>>>>> master
