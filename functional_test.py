@@ -21,17 +21,18 @@ class NewVisitorTest(unittest.TestCase):
         self.browser.get('http://127.0.0.1:8000')
         self.assertIn('To-Do', self.browser.title)
         header_text = self.browser.find_element_by_tag_name('h1').text
-        self.asserIn('To-Do', header_text)
+        self.assertIn('HI', header_text)
         input_box = self.browser.find_element_by_id('id_new_item')
         self.assertEqual(
             input_box.get_attribute('placeholder'),
             'Enter a To-Do item',
         )
-        input_box.send_keys()
+        input_box.send_keys('Купить павлиньи перья')
+        time.sleep(1)
         input_box.send_keys(Keys.ENTER)
         table = self.browser.find_element_by_id('id_list_table')
-        rows = table.find_element_by_tag_name('tr')
-        self.asserTrue(
+        rows = table.find_elements_by_tag_name('tr')
+        self.assertTrue(
             any(row.text == '1: Купить павлиньи перья' for row in rows)
         )
         self.fail('Закончить тест')

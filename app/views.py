@@ -1,15 +1,6 @@
 from django.http import HttpResponse
+from django.shortcuts import render
 import pdb
 
 def index(request):
-    
-    return HttpResponse('<html><title>To-Do</title></html>')
-
-class a:
-
-    def foo():
-        pass
-
-    
-
-
+    return render(request, 'index.html')
