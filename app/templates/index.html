@@ -1,4 +1,15 @@
 <html>
-  <title>To-Do</title>
-  <h1>HI</h1>
+  <head>
+    <title>To-Do</title>
+  </head>
+  <body>
+    <h1>To-Do</h1>
+    <form method="POST">
+      <input name="item_text" id="id_new_item" placeholder="Enter a To-Do item"/>
+     {% csrf_token %}
+    </form>
+    <table id="id_list_table">
+      <tr><td>{{ new_item_text }}</td></tr>
+    </table>
+  </body>
 </html>
