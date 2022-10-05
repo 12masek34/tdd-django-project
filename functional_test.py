@@ -31,12 +31,15 @@ class NewVisitorTest(unittest.TestCase):
             input_box.get_attribute('placeholder'),
             'Enter a To-Do item',
         )
-        input_box.send_keys('1: Купить павлиньи перья')
+        input_box.send_keys('Купить павлиньи перья')
         input_box.send_keys(Keys.ENTER)
         time.sleep(1)
-        input_box.send_keys('2: Сделать мушку из павлиньих перьев')
+
+        input_box = self.browser.find_element('id', 'id_new_item')
+        input_box.send_keys('Сделать мушку из павлиньих перьев')
         input_box.send_keys(Keys.ENTER)
         time.sleep(1)
+
         self.check_for_row_in_list_table('1: Купить павлиньи перья')
         self.check_for_row_in_list_table('2: Сделать мушку из павлиньих перьев')
 
