@@ -1,2 +1,2 @@
 # tdd-django-project
-add readme
+add readme.
