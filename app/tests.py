@@ -1,29 +1,40 @@
 from http import HTTPStatus
 
 from django.test import TestCase
-from app.views import index
 
-from app.models import Item
+from app.models import Item, List
 
 class HomePageTest(TestCase):
     pass
 
 
-class ItemModelTest(TestCase):
+class ListAndItemModelsTest(TestCase):
+
 
     def test_save_and_retrive_items(self):
+        list_ = List()
+        list_.save()
+
         first_item = Item()
         first_item.text = 'the first (ever) list item'
+        first_item.list = list_
         first_item.save()
+
         second_item = Item()
         second_item.text = 'second item'
+        second_item.list =  list_
         second_item.save()
+
+        saved_list = List.objects.first()
+        self.assertEqual(saved_list, list_)
 
         saved_items = Item.objects.all()
         self.assertEqual(saved_items.count(), 2)
         first_saved = saved_items[0]
         second_saved = saved_items[1]
         self.assertEqual(first_saved.text, 'the first (ever) list item')
+        self.assertEqual(first_saved.list, list_)
+        self.assertEqual(second_saved.list, list_)
         self.assertEqual(second_saved.text , 'second item')
 
 
@@ -35,13 +46,15 @@ class ListViewTest(TestCase):
 
     
     def test_display_all_list_item(self):
-       Item.objects.create(text='item1')
-       Item.objects.create(text='item2')
+        list_ = List.objects.create()
 
-       response = self.client.get('/lists/some-text/')
+        Item.objects.create(text='item1', list=list_)
+        Item.objects.create(text='item2', list=list_)
 
-       self.assertContains(response, 'item1')
-       self.assertContains(response, 'item2')
+        response = self.client.get('/lists/some-text/')
+
+        self.assertContains(response, 'item1')
+        self.assertContains(response, 'item2')
 
 
 class NewListTest(TestCase):
