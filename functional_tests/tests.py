@@ -1,4 +1,5 @@
 import time
+from typing import Text
 import unittest
 
 from django.test import LiveServerTestCase
@@ -34,7 +35,7 @@ class NewVisitorTest(LiveServerTestCase):
                     raise e
                 time.sleep(0.5)
 
-    def test_can_start_a_list_and_retrieve_it_later(self):
+    def test_can_start_a_list_for_one_user(self):
         self.browser.get(self.live_server_url)
         self.assertIn('To-Do', self.browser.title)
         header_text = self.browser.find_element('tag name', 'h1').text
@@ -60,5 +61,34 @@ class NewVisitorTest(LiveServerTestCase):
         self.fail('Закончить тест')
 
 
-if __name__ == '__main__':
-    unittest.main(warnings='ignore')
+    def test_mulriple_user_can_start_lists_at_different_urls(self):
+        self.browser.get(self.live_server_url)
+        input_box = self.browser.find_element('id', 'id_new_item')
+        input_box.send_keys('Купить павлиньи перья')
+        input_box.send_keys(Keys.ENTER)
+        self.wait_for_row_in_list_table('1: Купить павлиньи перья')
+
+        edith_list_url = self.browser.current_url
+        self.assertRegex(edith_list_url, '/lists/.+')
+
+        self.browser.quit()
+        self.browser = webdriver.Firefox(
+           executable_path='/Users/dmitrijmartys/Python/test/core/geckodriver')
+
+        self.browser.get(self.live_server_url)
+        page_text = self.browser.find_element('tag name', 'body').text
+        self.assertNotIn('Купить павлиньи перья', page_text)
+        self.assertNotIn('Сделать мушку из павлиньих перьев', page_text)
+
+        input_box = self.browser.find_element('id', 'id_new_item')
+        input_box.send_keys('Купить молоко')
+        input_box.send_keys(Keys.ENTER)
+        self.wait_for_row_in_list_table('1: Купить молоко')
+
+        francis_list_url = self.browser.current_url
+        self.assertRegex(francis_list_url, '/lists/.+')
+        self.assertNotEqual(francis_list_url, edith_list_url)
+
+        page_text = self.browser.find_element('tag name', 'body').text
+        self.assertNotIn('Купить павлиньи перья', page_text)
+        self.assertNotIn('Купить молоко', page_text)
