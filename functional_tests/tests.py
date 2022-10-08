@@ -1,6 +1,4 @@
 import time
-from typing import Text
-import unittest
 
 from django.test import LiveServerTestCase
 from selenium import webdriver
