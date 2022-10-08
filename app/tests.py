@@ -41,20 +41,25 @@ class ListAndItemModelsTest(TestCase):
 class ListViewTest(TestCase):
 
     def test_uses_list_template(self):
-        response = self.client.get('/lists/some-text/')
+        list_ = List.objects.create()
+        response = self.client.get(f'/lists/{list_.id}/')
         self.assertTemplateUsed(response, 'list.html')
 
     
-    def test_display_all_list_item(self):
-        list_ = List.objects.create()
+    def test_display_only_item_for_that_list(self):
+        correct_list = List.objects.create()
 
-        Item.objects.create(text='item1', list=list_)
-        Item.objects.create(text='item2', list=list_)
+        Item.objects.create(text='item1', list=correct_list)
+        Item.objects.create(text='item2', list=correct_list)
+        other_list = List.objects.create()
+        Item.objects.create(text='any text1', list=other_list)
+        Item.objects.create(text='any text2', list=other_list)
 
-        response = self.client.get('/lists/some-text/')
-
+        response = self.client.get(f'/lists/{correct_list.id}/')
         self.assertContains(response, 'item1')
         self.assertContains(response, 'item2')
+        self.assertNotContains(response, 'any text1')
+        self.assertNotContains(response, 'any text2')
 
 
 class NewListTest(TestCase):
@@ -66,11 +71,7 @@ class NewListTest(TestCase):
         self.assertEqual(new_item.text, 'a new list item')
 
 
-    def test_redirect_after_post(self):
-        response = self.client.post('/lists/new', data={'item_text': 'a new list item'})
-        self.assertEqual(response.status_code, HTTPStatus.FOUND)
-        self.assertEqual(response['location'], '/lists/some-text/')
-
     def test_redirection_after_post(self):
         response = self.client.post('/lists/new', data={'item_text': 'A new item text'})
-        self.assertRedirects(response, '/lists/some-text/')
+        list_ = List.objects.first()
+        self.assertRedirects(response, f'/lists/{list_.id}/')
