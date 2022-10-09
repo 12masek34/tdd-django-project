@@ -4,9 +4,11 @@
   </head>
   <body>
     <h1>Start a new To-Do</h1>
-    <form method="POST" action='/lists/{{ list.id  }}/add_item'>
-      <input name="item_text" id="id_new_item" placeholder="Enter a To-Do item"/>
-     {% csrf_token %}
+    <form method="POST" action='/lists/new'>
+      <p style="text-align: center;">
+        <input name="item_text" id="id_new_item" placeholder="Enter a To-Do item"/>
+      </p>
+      {% csrf_token %}
     </form>
   </body>
 </html>

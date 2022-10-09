@@ -74,9 +74,9 @@ class NewVisitorTest(LiveServerTestCase):
            executable_path='/Users/dmitrijmartys/Python/test/core/geckodriver')
 
         self.browser.get(self.live_server_url)
-        page_text = self.browser.find_element('tag name', 'body').text
-        self.assertNotIn('Купить павлиньи перья', page_text)
-        self.assertNotIn('Сделать мушку из павлиньих перьев', page_text)
+        page_text1 = self.browser.find_element('tag name', 'body').text
+        self.assertNotIn('Купить павлиньи перья', page_text1)
+        self.assertNotIn('Сделать мушку из павлиньих перьев', page_text1)
 
         input_box = self.browser.find_element('id', 'id_new_item')
         input_box.send_keys('Купить молоко')
@@ -87,6 +87,28 @@ class NewVisitorTest(LiveServerTestCase):
         self.assertRegex(francis_list_url, '/lists/.+')
         self.assertNotEqual(francis_list_url, edith_list_url)
 
-        page_text = self.browser.find_element('tag name', 'body').text
-        self.assertNotIn('Купить павлиньи перья', page_text)
-        self.assertNotIn('Купить молоко', page_text)
+        page_text2 = self.browser.find_element('tag name', 'body').text
+        self.assertNotIn('Купить павлиньи перья', page_text2)
+        self.assertNotIn('Купить молоко', page_text1)
+
+
+    def test_layout_and_styling(self):
+        self.browser.get(self.live_server_url)
+        self.browser.set_window_size(1024, 768)
+
+        input_box = self.browser.find_element('id', 'id_new_item')
+        self.assertAlmostEqual(
+            input_box.location['x'] + input_box.size['width'] / 2,
+            512,
+            delta=10,
+        )
+
+        input_box.send_keys('testing')
+        input_box.send_keys(Keys.ENTER)
+        self.wait_for_row_in_list_table('1: testing')
+        input_box = self.browser.find_element('id', 'id_new_item')
+        self.assertAlmostEqual(
+            input_box.location['x'] + input_box.size['width'] / 2,
+            512,
+            delta=10,
+        )
