@@ -41,7 +41,7 @@ class NewVisitorTest(LiveServerTestCase):
         input_box = self.browser.find_element('id', 'id_new_item')
         self.assertEqual(
             input_box.get_attribute('placeholder'),
-            'Enter a To-Do item',
+            'Enter a to-do item',
         )
         input_box.send_keys('Купить павлиньи перья')
         input_box.send_keys(Keys.ENTER)
