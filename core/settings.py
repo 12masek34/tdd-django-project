@@ -128,4 +128,4 @@ STATIC_ROOT = BASE_DIR.parent / 'static'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CSRF_TRUSTED_ORIGINS = ['https://19ea-89-113-94-159.eu.ngrok.io/', '192.168.0.109']
+CSRF_TRUSTED_ORIGINS = ['https://19ea-89-113-94-159.eu.ngrok.io/', 'https://192.168.0.109']
