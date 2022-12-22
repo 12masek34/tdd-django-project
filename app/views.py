@@ -4,12 +4,14 @@ from app.models import Item, List
 
 
 def index(request):
+    import ipdb; ipdb.set_trace();
     return render(request, 'index.html')
 
 
 def view_list(request, list_id: int):
     list_ = List.objects.get(id=list_id)
     items = Item.objects.filter(list=list_)
+
     return render(request, 'list.html', {'list': list_})
 
 

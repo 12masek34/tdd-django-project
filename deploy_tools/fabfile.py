@@ -1,3 +1,4 @@
+from importlib.util import source_from_cache
 from os import lseek
 from fabric.contrib.files import append, exists, sed
 from fabric.api import env, local, run
@@ -5,21 +6,22 @@ import random
 
 REPO_URL = 'https://github.com/hjwp/book-example.git'
 def deploy():
-    site_folder = f'/home/{env.user}/sites/{env.host}'
+    # site_folder = f'/home/{env.user}/sites/{env.host}'
+    site_folder = f'/home/{env.user}/sites/tdd'
     source_folder = site_folder + '/source'
-    print(source_folder)
     _create_directory_structure_if_necessary(site_folder)
     _get_latest_source(source_folder)
-    _update_settings(source_folder, env.host)
+    _update_settings(source_folder, 'tdd')
     _update_virtualenv(source_folder)
     _update_static_files(source_folder)
     _update_database(source_folder)
 
 def _create_directory_structure_if_necessary(site_folder):
     for subfolder in ('database', 'static', 'venv', 'source'):
-        run(f'mkder -p{site_folder}/{subfolder}')
+        run(f'mkdir -p {site_folder}/{subfolder}')
 
 def _get_latest_source(source_folder):
+    print(source_folder)
     if exists(source_folder + '/.git'):
         run(f'cd {source_folder} && git fetch')
     else:
