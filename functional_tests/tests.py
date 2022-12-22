@@ -115,6 +115,3 @@ class NewVisitorTest(StaticLiveServerTestCase):
             512,
             delta=10,
         )
-
-    def test_cannot_added_empty_list_items(self):
-        self.fail('empty test')
