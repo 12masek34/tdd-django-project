@@ -116,3 +116,4 @@ class NewVisitorTest(StaticLiveServerTestCase):
             delta=10,
         )
 ###
+###
